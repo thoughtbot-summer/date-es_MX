@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en-US">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Date in Spanish</title>
+		<style>
+			body {
+				text-align: center;
+			}
+
+			label {
+				font-weight: bold;
+			}
+
+			output {
+				display: block;
+			}
+		</style>
+	</head>
+	<body>
+		<main>
+			<h1>Date in Spanish</h1>
+			<form>
+				<p>
+					<label for="input">Date:</label>
+					<br />
+					<input type="date" id="input" name="input" />
+				</p>
+				<p>
+					<label for="output">Spanish:</label>
+					<output for="input" id="output" name="output" aria-live="polite"><time lang="es-MX"></time><noscript>Please enable JavaScript</noscript></output>
+				</p>
+			</form>
+		</main>
+		<script>
+			const form = document.forms[0]
+			const input = form.elements.input
+			const output = form.elements.output
+			const time = output.getElementsByTagName('time')[0]
+			const format = (new Intl.DateTimeFormat('es-MX', { timeZone: 'UTC', dateStyle: 'long' })).format
+			form.addEventListener('submit', (e) => {
+				e.preventDefault()
+				if (input.valueAsDate) {
+					time.dateTime = input.value
+					time.textContent = format(input.valueAsDate)
+					output.style.display = null
+				} else {
+					output.style.display = 'none'
+					time.textContent = ''
+					time.dateTime = ''
+				}
+			})
+			input.addEventListener('change', (e) => { e.currentTarget.form.requestSubmit() })
+			input.addEventListener('input', (e) => { e.currentTarget.form.requestSubmit() })
+			form.requestSubmit()
+		</script>
+	</body>
+</html>
